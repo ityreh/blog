@@ -23,6 +23,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
+    'grappelli',
+    #'admin_honeypot',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

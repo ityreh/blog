@@ -2,3 +2,6 @@ Django==4.0.4
 psycopg2==2.9.3
 django-model-utils==4.2.0
 Pillow==9.1.0
+django-grappelli==3.0.3
+#TODO: waiting for django 4 compatible version
+#django-admin-honeypot==1.1.0
