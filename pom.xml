@@ -13,9 +13,9 @@
     </parent>
 
     <groupId>de.ityreh.home</groupId>
-    <artifactId>blog-service</artifactId>
+    <artifactId>blog</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Blog Service</name>
+    <name>Blog</name>
     <description>Blog service for managing users, posts, tags, and categories</description>
 
     <properties>
@@ -50,11 +50,24 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- H2 Database (for development) -->
+        <!-- Liquibase for database migrations -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <!-- PostgreSQL Database -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- H2 Database (for development/testing) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- Lombok -->

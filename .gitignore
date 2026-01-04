@@ -23,7 +23,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
+# Keep Maven wrapper jar for Docker builds
+# .mvn/wrapper/maven-wrapper.jar
 
 # IDE files
 .idea/

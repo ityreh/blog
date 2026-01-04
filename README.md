@@ -1,4 +1,4 @@
-# Blog Service
+# Blog
 
 A modern Java Spring Boot REST API service for managing a blog system with users, posts, tags, and categories.
 
@@ -10,25 +10,29 @@ A modern Java Spring Boot REST API service for managing a blog system with users
 - **Category System**: Classify posts into categories
 - **Draft & Published States**: Posts can be saved as drafts or published
 - **Spring Security**: Secured endpoints with HTTP Basic authentication
-- **JPA/Hibernate**: Database persistence with H2 in-memory database
+- **Database Migrations**: Liquibase for version-controlled schema management
+- **PostgreSQL**: Production-ready relational database
+- **Docker Support**: Container-ready with docker-compose for local development
 - **REST API**: Complete RESTful API with proper HTTP methods and status codes
 - **Clean Code**: Modern Java practices with Lombok for reduced boilerplate
 
 ## Technology Stack
 
-- **Java 17**: Modern Java LTS version
-- **Spring Boot 3.2.1**: Application framework
+- **Java 21**: Latest LTS version
+- **Spring Boot 3.4.1**: Application framework
 - **Spring Data JPA**: Data persistence
 - **Spring Security**: Authentication and authorization
 - **Hibernate**: ORM framework
+- **Liquibase**: Database migration tool
+- **PostgreSQL**: Production database
 - **Lombok**: Reduce boilerplate code
-- **H2 Database**: In-memory database for development
+- **Docker**: Container platform
 - **Maven**: Build and dependency management
 
 ## Project Structure
 
 ```
-de.ityreh.home.blogservice
+de.ityreh.home.blog
 ├── config/              # Configuration classes (Security, Exception Handling)
 ├── controller/          # REST Controllers
 ├── dto/                 # Data Transfer Objects
@@ -42,16 +46,47 @@ de.ityreh.home.blogservice
 
 ### Prerequisites
 
-- Java 17 or higher
-- Maven 3.6+
+- Java 21 or higher
+- Maven 3.9+
+- Docker & Docker Compose (for containerized setup)
 
-### Build the Project
+### Run with Docker Compose (Recommended)
+
+The easiest way to run the application locally is using Docker Compose:
+
+```bash
+# Start the application and PostgreSQL database
+docker-compose up -d
+
+# View logs
+docker-compose logs -f blog-app
+
+# Stop the application
+docker-compose down
+
+# Stop and remove volumes (clean slate)
+docker-compose down -v
+```
+
+The application will be available at `http://localhost:8080`
+
+### Run Locally (Without Docker)
+
+#### 1. Start PostgreSQL
+
+You need a PostgreSQL database running. You can use Docker:
+
+```bash
+docker run --name blog-postgres -e POSTGRES_DB=blogdb -e POSTGRES_USER=bloguser -e POSTGRES_PASSWORD=blogpass -p 5432:5432 -d postgres:16-alpine
+```
+
+#### 2. Build the Project
 
 ```bash
 mvn clean package
 ```
 
-### Run the Application
+#### 3. Run the Application
 
 ```bash
 mvn spring-boot:run
@@ -59,9 +94,31 @@ mvn spring-boot:run
 
 The application will start on `http://localhost:8080`
 
-### H2 Database Console
+## Database Migrations
 
-Access the H2 console at: `http://localhost:8080/h2-console`
+This project uses Liquibase for database schema management. Migration files are located in:
+
+```
+src/main/resources/db/changelog/
+├── db.changelog-master.xml          # Master changelog file
+└── changes/
+    └── 001-initial-schema.xml       # Initial database schema
+```
+
+Liquibase automatically runs migrations on application startup. To add new migrations:
+
+1. Create a new changeset XML file in `src/main/resources/db/changelog/changes/`
+2. Include it in the master changelog file
+
+## Environment Variables
+
+The application can be configured using environment variables:
+
+- `DB_HOST`: PostgreSQL host (default: `localhost`)
+- `DB_PORT`: PostgreSQL port (default: `5432`)
+- `DB_NAME`: Database name (default: `blogdb`)
+- `DB_USER`: Database username (default: `bloguser`)
+- `DB_PASSWORD`: Database password (default: `blogpass`)
 
 - JDBC URL: `jdbc:h2:mem:blogdb`
 - Username: `sa`

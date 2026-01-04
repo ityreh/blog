@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Create users table -->
+    <changeSet id="001-create-users-table" author="blog-service">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="enabled" type="BOOLEAN" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create categories table -->
+    <changeSet id="002-create-categories-table" author="blog-service">
+        <createTable tableName="categories">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="VARCHAR(500)"/>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create tags table -->
+    <changeSet id="003-create-tags-table" author="blog-service">
+        <createTable tableName="tags">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="VARCHAR(200)"/>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create posts table -->
+    <changeSet id="004-create-posts-table" author="blog-service">
+        <createTable tableName="posts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_posts_author" references="users(id)"/>
+            </column>
+            <column name="category_id" type="BIGINT">
+                <constraints foreignKeyName="fk_posts_category" references="categories(id)"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="published_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create post_tags junction table -->
+    <changeSet id="005-create-post-tags-table" author="blog-service">
+        <createTable tableName="post_tags">
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_post_tags_post" references="posts(id)"/>
+            </column>
+            <column name="tag_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_post_tags_tag" references="tags(id)"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="post_tags" columnNames="post_id,tag_id"/>
+    </changeSet>
+
+    <!-- Create indexes for better query performance -->
+    <changeSet id="006-create-indexes" author="blog-service">
+        <createIndex tableName="posts" indexName="idx_posts_author_id">
+            <column name="author_id"/>
+        </createIndex>
+        <createIndex tableName="posts" indexName="idx_posts_category_id">
+            <column name="category_id"/>
+        </createIndex>
+        <createIndex tableName="posts" indexName="idx_posts_status">
+            <column name="status"/>
+        </createIndex>
+        <createIndex tableName="users" indexName="idx_users_username">
+            <column name="username"/>
+        </createIndex>
+        <createIndex tableName="users" indexName="idx_users_email">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
