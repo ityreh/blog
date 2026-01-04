@@ -57,11 +57,9 @@ public class PostService {
         }
 
         if (createDto.getTagIds() != null && !createDto.getTagIds().isEmpty()) {
-            Set<Tag> tags = new HashSet<>();
-            for (Long tagId : createDto.getTagIds()) {
-                Tag tag = tagRepository.findById(tagId)
-                        .orElseThrow(() -> new IllegalArgumentException("Tag not found with ID: " + tagId));
-                tags.add(tag);
+            Set<Tag> tags = new HashSet<>(tagRepository.findAllById(createDto.getTagIds()));
+            if (tags.size() != createDto.getTagIds().size()) {
+                throw new IllegalArgumentException("One or more tag IDs not found");
             }
             post.setTags(tags);
         }
@@ -159,11 +157,9 @@ public class PostService {
         }
 
         if (updateDto.getTagIds() != null) {
-            Set<Tag> tags = new HashSet<>();
-            for (Long tagId : updateDto.getTagIds()) {
-                Tag tag = tagRepository.findById(tagId)
-                        .orElseThrow(() -> new IllegalArgumentException("Tag not found with ID: " + tagId));
-                tags.add(tag);
+            Set<Tag> tags = new HashSet<>(tagRepository.findAllById(updateDto.getTagIds()));
+            if (tags.size() != updateDto.getTagIds().size()) {
+                throw new IllegalArgumentException("One or more tag IDs not found");
             }
             post.setTags(tags);
         }

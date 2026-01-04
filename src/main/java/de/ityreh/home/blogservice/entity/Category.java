@@ -31,7 +31,7 @@ public class Category {
     @Column(length = 500)
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
     @Builder.Default
     private List<Post> posts = new ArrayList<>();
 
