@@ -120,10 +120,6 @@ The application can be configured using environment variables:
 - `DB_USER`: Database username (default: `bloguser`)
 - `DB_PASSWORD`: Database password (default: `blogpass`)
 
-- JDBC URL: `jdbc:h2:mem:blogdb`
-- Username: `sa`
-- Password: (leave empty)
-
 ## API Endpoints
 
 ### Users
